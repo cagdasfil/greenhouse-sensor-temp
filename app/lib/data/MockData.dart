@@ -12,14 +12,12 @@ class MockData {
 
   MockData() {
     // Data retrieved from server
-    sensorCoordinates = new List.generate(
-        Config.PAGE_COUNT * Config.SENSOR_PER_PAGE_COUNT,
-        (index) =>
-            "${(index / Config.SENSOR_PER_PAGE_COUNT).floor()}-${index % Config.SENSOR_PER_PAGE_COUNT}:sensor$index");
+    sensorCoordinates = new List.generate(Config.PAGE_COUNT * Config.SENSOR_PER_PAGE_COUNT,
+        (index) => "${(index / Config.SENSOR_PER_PAGE_COUNT).floor()}-${index % Config.SENSOR_PER_PAGE_COUNT}:sensor$index");
 
     // Data retrieved from server
-    sensorTemperatures = new List.generate(Config.PAGE_COUNT * Config.SENSOR_PER_PAGE_COUNT,
-        (index) => "sensor$index:${randomDoubleInRange(min: 20.0, max: 30.0)}");
+    sensorTemperatures =
+        new List.generate(Config.PAGE_COUNT * Config.SENSOR_PER_PAGE_COUNT, (index) => "sensor$index:${randomDoubleInRange(min: 20.0, max: 30.0)}");
   }
 
   // Random double generator for mocking temperature data
@@ -44,8 +42,7 @@ class MockData {
       List<String> splittedData = data.split("-");
       // after split : [position, name]
       List<String> splittedPosNameData = splittedData[1].split(":");
-      parsedDataList.add(
-          new SensorCoordinate(int.parse(splittedData[0]), int.parse(splittedPosNameData[0]), splittedPosNameData[1]));
+      parsedDataList.add(new SensorCoordinate(int.parse(splittedData[0]), int.parse(splittedPosNameData[0]), splittedPosNameData[1]));
     }
     return parsedDataList;
   }
@@ -60,7 +57,7 @@ class MockData {
     parsedTemperatures = parseSensorTemperature(sensorTemperatures);
     List<List<RenderingSensorData>> renderingData = new List.generate(Config.PAGE_COUNT, (index) => []);
     for (var data in parsedCoordinates) {
-      renderingData[data.pageNumber].add(RenderingSensorData(data.name, findTempByName(data.name).toString()));
+      renderingData[data.pageNumber].add(RenderingSensorData(data.name, findTempByName(data.name).toString(), null));
     }
     return renderingData;
   }

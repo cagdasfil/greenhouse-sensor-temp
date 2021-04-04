@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "838233642755",
+    "firebase_url": "https://rasptemp-c417a.firebaseio.com",
+    "project_id": "rasptemp-c417a",
+    "storage_bucket": "rasptemp-c417a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:838233642755:android:a327bdf990f029c4ad7b36",
+        "android_client_info": {
+          "package_name": "com.example.rasptemp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "838233642755-m0d8ob8lmren6g6un9r361ak7pmk83du.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBp1AicWE4h3zL-oTj3rASBO1yfmREIXEM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "838233642755-m0d8ob8lmren6g6un9r361ak7pmk83du.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
