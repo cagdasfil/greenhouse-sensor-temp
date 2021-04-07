@@ -1,10 +1,10 @@
 import 'package:app/colors/Colors.dart';
 import 'package:app/config/Config.dart';
-import 'package:app/data/MockData.dart';
 import 'package:app/model/RenderingSensorData.dart';
+import 'package:app/presenter/app_icons.dart';
 import 'package:app/services/firebaseDatabase.dart';
 import 'package:flutter/material.dart';
-import 'Grid.dart';
+import 'package:app/view/Grid.dart';
 
 class Tabs extends StatefulWidget {
   @override
@@ -20,9 +20,11 @@ class _TabsState extends State<Tabs> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(vsync: this, length: Config.PAGE_COUNT);
-    _tabController.addListener(_setActiveTabIndex);
     _sensorRawData = dataLoader.getSensorDataFromCloud();
+    _sensorRawData.then((value) {
+      _tabController = TabController(vsync: this, length: Config.PAGE_COUNT);
+      _tabController.addListener(_setActiveTabIndex);
+    });
   }
 
   @override
@@ -52,8 +54,54 @@ class _TabsState extends State<Tabs> with SingleTickerProviderStateMixin {
             final sensorData = sensorRawData.data;
             List<Widget> _grids = List<Widget>.generate(Config.PAGE_COUNT, (index) => SensorGrid(sensorData[index]));
             return Scaffold(
+              drawer: Container(
+                width: 250,
+                child: Drawer(
+                  child: Container(
+                    child: ListView(
+                      padding: EdgeInsets.zero,
+                      children: <Widget>[
+                        Container(
+                          height: 88,
+                          child: DrawerHeader(
+                            child: Text(
+                              Config.RECIPIENT_NAME,
+                              style: TextStyle(fontSize: 32, color: Colors.white),
+                            ),
+                            decoration: BoxDecoration(
+                              color: AppColors.primary,
+                            ),
+                          ),
+                        ),
+                        ListTile(
+                          leading: Icon(AppIcons.temperature_high),
+                          title: Text('Sensorler', style: TextStyle(fontSize: 16)),
+                          onTap: () {
+                            // Update the state of the app.
+                            // ...
+                          },
+                        ),
+                        ListTile(
+                          leading: Icon(AppIcons.history),
+                          title: Text(
+                            'Gecmis',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          onTap: () {
+                            // Update the state of the app.
+                            // ...
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
               appBar: AppBar(
-                title: const Text(Config.RECIPIENT_NAME),
+                title: Text(
+                  dataLoader.currentDate,
+                  textAlign: TextAlign.center,
+                ),
                 backgroundColor: AppColors.primary,
               ),
               body: Container(
