@@ -9,12 +9,13 @@ class FirebaseDatabaseDataLoader {
   int pageCount = 1;
   int maxSensorInSinglePage = 1;
   bool isPageCountSet = false;
+  String currentDate;
 
   Future<List<List<RenderingSensorData>>> getSensorDataFromCloud() async {
     DataSnapshot snapshot = await FirebaseDatabaseDataLoader.dbRef.once();
     Map<String, dynamic> temperaturesTree = snapshot.value.cast<String, dynamic>();
-    String currentDate = temperaturesTree.keys.first;
-    Map<String, double> sensorTemperatures = temperaturesTree[currentDate].cast<String, double>();
+    this.currentDate = temperaturesTree.keys.first;
+    Map<String, double> sensorTemperatures = temperaturesTree[this.currentDate].cast<String, double>();
     this.createAndSetSensorCoordinateData(sensorTemperatures);
     return this.createRenderingSensorData();
   }
@@ -53,7 +54,7 @@ class FirebaseDatabaseDataLoader {
       List<String> splittedSensorName = sensorName.split(":");
       String coordinate = splittedSensorName[0];
       List<String> splittedCoordinates = coordinate.split("-");
-      int pageNumber = int.parse(splittedCoordinates[0]);
+      int pageNumber = int.parse(splittedCoordinates[0]) - 1;
       int positionInPage = int.parse(splittedCoordinates[1]);
       String name = splittedSensorName[1];
       return SensorCoordinate(pageNumber, positionInPage, name);
