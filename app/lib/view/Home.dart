@@ -1,14 +1,12 @@
 import 'package:app/colors/Colors.dart';
 import 'package:app/config/Config.dart';
+import 'package:app/presenter/app_icons.dart';
+import 'package:app/view/History.dart';
+import 'package:app/view/Settings.dart';
 import 'package:flutter/material.dart';
-import 'Tabs.dart';
+import 'Sensors.dart';
 
-//TODO: Move the drawer to here, update myApp in the main.
-
-enum Section {
-  TABS,
-  HISTORY,
-}
+enum Pages { SENSORS, HISTORY, SETTINGS }
 
 class Home extends StatefulWidget {
   @override
@@ -16,56 +14,62 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
-  Widget body;
-  Section section;
+  Widget _selectedPage;
+
+  void setSelectedPage(Pages page) {
+    setState(() {
+      switch (page) {
+        case Pages.SENSORS:
+          _selectedPage = Sensors();
+          break;
+        case Pages.HISTORY:
+          _selectedPage = History();
+          break;
+        case Pages.SETTINGS:
+          _selectedPage = Settings();
+          break;
+        default:
+          _selectedPage = Sensors();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    /// You can easily control the section for example inside the initState where you check
-    /// if the user logged in, or other related logic
-    switch (section) {
-
-      /// Display the home section, simply by
-      case Section.TABS:
-        body = Tabs();
-        break;
-
-      case Section.HISTORY:
-        body = null;
-        break;
-    }
-
     return Scaffold(
       drawer: Container(
-        width: 250,
+        width: 300,
         child: Drawer(
           child: Container(
             child: ListView(
               padding: EdgeInsets.zero,
               children: <Widget>[
                 Container(
-                  height: 88,
-                  child: DrawerHeader(
-                    child: Text(
-                      Config.RECIPIENT_NAME,
-                      style: TextStyle(fontSize: 32, color: Colors.white),
-                    ),
-                    decoration: BoxDecoration(
-                      color: AppColors.primary,
-                    ),
-                  ),
-                ),
+                    margin: EdgeInsets.only(top: 30),
+                    padding: EdgeInsets.all(25),
+                    child: Image(image: AssetImage('assets/images/birlik_mantar.png'))),
                 ListTile(
-                  title: Text('Sensorler'),
+                  leading: Icon(AppIcons.temperature_high),
+                  title: Text('Sensorler', style: TextStyle(fontSize: 16)),
                   onTap: () {
-                    // Update the state of the app.
-                    // ...
+                    setSelectedPage(Pages.SENSORS);
+                    Navigator.pop(context);
                   },
                 ),
                 ListTile(
-                  title: Text('Gecmis'),
+                  leading: Icon(AppIcons.history),
+                  title: Text('Gecmis', style: TextStyle(fontSize: 16)),
                   onTap: () {
-                    // Update the state of the app.
-                    // ...
+                    setSelectedPage(Pages.HISTORY);
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.settings),
+                  title: Text('Ayarlar', style: TextStyle(fontSize: 16)),
+                  onTap: () {
+                    setSelectedPage(Pages.SETTINGS);
+                    Navigator.pop(context);
                   },
                 ),
               ],
@@ -80,6 +84,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         ),
         backgroundColor: AppColors.primary,
       ),
+      body: _selectedPage,
     );
   }
 }

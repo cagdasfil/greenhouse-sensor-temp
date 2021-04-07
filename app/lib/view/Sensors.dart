@@ -1,17 +1,16 @@
 import 'package:app/colors/Colors.dart';
 import 'package:app/config/Config.dart';
 import 'package:app/model/RenderingSensorData.dart';
-import 'package:app/presenter/app_icons.dart';
 import 'package:app/services/firebaseDatabase.dart';
 import 'package:flutter/material.dart';
 import 'package:app/view/Grid.dart';
 
-class Tabs extends StatefulWidget {
+class Sensors extends StatefulWidget {
   @override
-  _TabsState createState() => _TabsState();
+  _SensorsState createState() => _SensorsState();
 }
 
-class _TabsState extends State<Tabs> with SingleTickerProviderStateMixin {
+class _SensorsState extends State<Sensors> with SingleTickerProviderStateMixin {
   TabController _tabController;
   int _activeTabIndex = 0;
   FirebaseDatabaseDataLoader dataLoader = FirebaseDatabaseDataLoader();
@@ -54,57 +53,6 @@ class _TabsState extends State<Tabs> with SingleTickerProviderStateMixin {
             final sensorData = sensorRawData.data;
             List<Widget> _grids = List<Widget>.generate(Config.PAGE_COUNT, (index) => SensorGrid(sensorData[index]));
             return Scaffold(
-              drawer: Container(
-                width: 250,
-                child: Drawer(
-                  child: Container(
-                    child: ListView(
-                      padding: EdgeInsets.zero,
-                      children: <Widget>[
-                        Container(
-                          height: 88,
-                          child: DrawerHeader(
-                            child: Text(
-                              Config.RECIPIENT_NAME,
-                              style: TextStyle(fontSize: 32, color: Colors.white),
-                            ),
-                            decoration: BoxDecoration(
-                              color: AppColors.primary,
-                            ),
-                          ),
-                        ),
-                        ListTile(
-                          leading: Icon(AppIcons.temperature_high),
-                          title: Text('Sensorler', style: TextStyle(fontSize: 16)),
-                          onTap: () {
-                            // Update the state of the app.
-                            // ...
-                          },
-                        ),
-                        ListTile(
-                          leading: Icon(AppIcons.history),
-                          title: Text(
-                            'Gecmis',
-                            style: TextStyle(fontSize: 16),
-                          ),
-                          onTap: () {
-                            // Update the state of the app.
-                            // ...
-                          },
-                        ),
-                        ListTile(
-                          leading: Icon(Icons.settings),
-                          title: Text('Ayarlar', style: TextStyle(fontSize: 16)),
-                          onTap: () {
-                            // Update the state of the app.
-                            // ...
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
               appBar: AppBar(
                 title: Text(
                   dataLoader.currentDate,
@@ -132,7 +80,8 @@ class _TabsState extends State<Tabs> with SingleTickerProviderStateMixin {
                           borderRadius: BorderRadius.all(Radius.circular(20)),
                           border: Border.all(color: AppColors.primary, width: 0.5)),
                       child: TabBar(
-                        indicator: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(20)), color: AppColors.primary),
+                        indicator: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(20)), color: AppColors.primary),
                         tabs: List.generate(
                             Config.PAGE_COUNT,
                             (index) => Container(
@@ -141,7 +90,9 @@ class _TabsState extends State<Tabs> with SingleTickerProviderStateMixin {
                                 child: Text(
                                   "TAB ${index + 1}",
                                   style: TextStyle(
-                                      color: _activeTabIndex == index ? Colors.white : AppColors.primary, fontWeight: FontWeight.bold, fontSize: 16),
+                                      color: _activeTabIndex == index ? Colors.white : AppColors.primary,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16),
                                 ))),
                         controller: _tabController,
                       ),

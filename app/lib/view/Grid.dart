@@ -1,6 +1,3 @@
-import 'dart:ffi';
-
-import 'package:app/colors/Colors.dart';
 import 'package:app/config/Config.dart';
 import 'package:app/model/RenderingSensorData.dart';
 import 'package:flutter/material.dart';
@@ -12,10 +9,12 @@ class SensorGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: GridView.count(
-        padding: EdgeInsets.fromLTRB(30 / Config.SENSOR_PER_ROW_COUNT, 30 / Config.SENSOR_PER_ROW_COUNT, 30 / Config.SENSOR_PER_ROW_COUNT, 100),
+        padding: EdgeInsets.fromLTRB(
+            30 / Config.SENSOR_PER_ROW_COUNT, 30 / Config.SENSOR_PER_ROW_COUNT, 30 / Config.SENSOR_PER_ROW_COUNT, 100),
         shrinkWrap: true,
         crossAxisCount: Config.SENSOR_PER_ROW_COUNT,
-        children: List<SensorGridItem>.generate(Config.SENSOR_PER_PAGE_COUNT, (index) => SensorGridItem(data[index].name, data[index].temperature)),
+        children: List<SensorGridItem>.generate(
+            Config.SENSOR_PER_PAGE_COUNT, (index) => SensorGridItem(data[index].name, data[index].temperature)),
       ),
     );
   }
@@ -50,13 +49,15 @@ class SensorGridItem extends StatelessWidget {
             children: [
               Text(
                 name,
-                style: TextStyle(fontSize: 48 / Config.SENSOR_PER_ROW_COUNT, fontWeight: FontWeight.bold, color: Colors.white),
+                style: TextStyle(
+                    fontSize: 48 / Config.SENSOR_PER_ROW_COUNT, fontWeight: FontWeight.bold, color: Colors.white),
               ),
               Container(
                 margin: EdgeInsets.only(top: 5),
                 child: Text(
                   "$temperature °C",
-                  style: TextStyle(fontSize: 60 / Config.SENSOR_PER_ROW_COUNT, fontWeight: FontWeight.bold, color: Colors.white),
+                  style: TextStyle(
+                      fontSize: 60 / Config.SENSOR_PER_ROW_COUNT, fontWeight: FontWeight.bold, color: Colors.white),
                 ),
               )
             ],
