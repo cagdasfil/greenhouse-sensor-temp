@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:app/colors/Colors.dart';
 import 'package:app/config/Config.dart';
 import 'package:app/model/RenderingSensorData.dart';
@@ -23,8 +25,16 @@ class SensorGridItem extends StatelessWidget {
   final String name;
   final String temperature;
   SensorGridItem(this.name, this.temperature);
+
   @override
   Widget build(BuildContext context) {
+    Color sensorColor;
+    double temp = double.parse(temperature);
+    if (temp > Config.UPPER_LIMIT || temp < Config.LOWER_LIMIT) {
+      sensorColor = Colors.red;
+    } else {
+      sensorColor = Colors.green;
+    }
     return Container(
       margin: EdgeInsets.all(10),
       //color: Colors.red,
@@ -32,7 +42,9 @@ class SensorGridItem extends StatelessWidget {
         borderRadius: BorderRadius.all(Radius.circular(10)),
         child: Container(
           decoration: BoxDecoration(
-              gradient: LinearGradient(begin: Alignment.bottomLeft, end: Alignment.topRight, colors: [AppColors.tempBlue, AppColors.tempRed])),
+            color: sensorColor,
+            //gradient: LinearGradient(begin: Alignment.bottomLeft, end: Alignment.topRight, colors: [AppColors.tempBlue, AppColors.tempRed])
+          ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
