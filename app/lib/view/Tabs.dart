@@ -92,6 +92,14 @@ class _TabsState extends State<Tabs> with SingleTickerProviderStateMixin {
                             // ...
                           },
                         ),
+                        ListTile(
+                          leading: Icon(Icons.settings),
+                          title: Text('Ayarlar', style: TextStyle(fontSize: 16)),
+                          onTap: () {
+                            // Update the state of the app.
+                            // ...
+                          },
+                        ),
                       ],
                     ),
                   ),
