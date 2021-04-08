@@ -54,11 +54,21 @@ class _SensorsState extends State<Sensors> with SingleTickerProviderStateMixin {
             List<Widget> _grids = List<Widget>.generate(Config.PAGE_COUNT, (index) => SensorGrid(sensorData[index]));
             return Scaffold(
               appBar: AppBar(
-                title: Text(
-                  dataLoader.currentDate,
-                  textAlign: TextAlign.center,
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(margin: EdgeInsets.only(right: 10), child: Icon(Icons.date_range)),
+                    Text(
+                      dataLoader.currentDate.split(' ')[0].replaceAll('-', '/'),
+                      textAlign: TextAlign.center,
+                    ),
+                    Container(margin: EdgeInsets.fromLTRB(20, 0, 10, 0), child: Icon(Icons.access_time_sharp)),
+                    Text(
+                      dataLoader.currentDate.split(' ')[1],
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
                 ),
-                backgroundColor: AppColors.primary,
               ),
               body: Container(
                 color: AppColors.background,
