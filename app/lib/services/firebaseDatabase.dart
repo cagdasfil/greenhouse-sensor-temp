@@ -20,6 +20,15 @@ class FirebaseDatabaseDataLoader {
     return this.createRenderingSensorData();
   }
 
+  Future<List<List<RenderingSensorData>>> parseSensorDataFromCloud(DataSnapshot snapshot) async {
+    Map<String, dynamic> temperaturesTree = snapshot.value.cast<String, dynamic>();
+    this.currentDate = temperaturesTree.keys.first;
+    Map<String, double> sensorTemperatures = temperaturesTree[this.currentDate].cast<String, double>();
+    renderingSensorCoordinateData = new List.empty(growable: true);
+    this.createAndSetSensorCoordinateData(sensorTemperatures);
+    return this.createRenderingSensorData();
+  }
+
   void createAndSetSensorCoordinateData(Map<String, double> sensorTemperatures) {
     sensorTemperatures.forEach((key, value) {
       // Key is the name of the string and value is the temperature
@@ -27,10 +36,10 @@ class FirebaseDatabaseDataLoader {
       if (!this.isPageCountSet && coordinate.pageNumber > pageCount) {
         this.pageCount = coordinate.pageNumber;
       }
-      RenderingSensorData sensorData = RenderingSensorData(key, value.toString(), coordinate);
+      RenderingSensorData sensorData = RenderingSensorData(value.toString(), coordinate);
       this.renderingSensorCoordinateData.add(sensorData);
     });
-    Config.PAGE_COUNT = this.pageCount;
+    Config.PAGE_COUNT = this.pageCount + 1;
     this.isPageCountSet = true;
   }
 
@@ -44,6 +53,11 @@ class FirebaseDatabaseDataLoader {
       if (element.length > maxSensorInSinglePage) {
         maxSensorInSinglePage = element.length;
       }
+      while (element.length < maxSensorInSinglePage) {
+        element.add(RenderingSensorData("", SensorCoordinate(0, element.length, "")));
+      }
+
+      element.sort((a, b) => a.coordinate.positionInPage.compareTo(b.coordinate.positionInPage));
     });
     Config.SENSOR_PER_PAGE_COUNT = maxSensorInSinglePage;
     return ret;
@@ -56,7 +70,7 @@ class FirebaseDatabaseDataLoader {
       List<String> splittedCoordinates = coordinate.split("-");
       int pageNumber = int.parse(splittedCoordinates[0]) - 1;
       int positionInPage = int.parse(splittedCoordinates[1]);
-      String name = splittedSensorName[1];
+      String name = splittedSensorName[1].trim();
       return SensorCoordinate(pageNumber, positionInPage, name);
     } on FormatException {
       return SensorCoordinate(0, 0, sensorName);

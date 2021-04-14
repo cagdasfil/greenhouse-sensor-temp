@@ -21,8 +21,15 @@ class _SensorsState extends State<Sensors> with SingleTickerProviderStateMixin {
     super.initState();
     _sensorRawData = dataLoader.getSensorDataFromCloud();
     _sensorRawData.then((value) {
-      _tabController = TabController(vsync: this, length: Config.PAGE_COUNT);
-      _tabController.addListener(_setActiveTabIndex);
+      if (_tabController == null) {
+        _tabController = TabController(vsync: this, length: Config.PAGE_COUNT);
+        _tabController.addListener(_setActiveTabIndex);
+      }
+    });
+    FirebaseDatabaseDataLoader.dbRef.onValue.listen((event) {
+      setState(() {
+        _sensorRawData = dataLoader.parseSensorDataFromCloud(event.snapshot);
+      });
     });
   }
 
@@ -90,8 +97,7 @@ class _SensorsState extends State<Sensors> with SingleTickerProviderStateMixin {
                           borderRadius: BorderRadius.all(Radius.circular(20)),
                           border: Border.all(color: AppColors.primary, width: 0.5)),
                       child: TabBar(
-                        indicator: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(20)), color: AppColors.primary),
+                        indicator: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(20)), color: AppColors.primary),
                         tabs: List.generate(
                             Config.PAGE_COUNT,
                             (index) => Container(
@@ -100,9 +106,7 @@ class _SensorsState extends State<Sensors> with SingleTickerProviderStateMixin {
                                 child: Text(
                                   "TAB ${index + 1}",
                                   style: TextStyle(
-                                      color: _activeTabIndex == index ? Colors.white : AppColors.primary,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16),
+                                      color: _activeTabIndex == index ? Colors.white : AppColors.primary, fontWeight: FontWeight.bold, fontSize: 16),
                                 ))),
                         controller: _tabController,
                       ),

@@ -57,7 +57,7 @@ class MockData {
     parsedTemperatures = parseSensorTemperature(sensorTemperatures);
     List<List<RenderingSensorData>> renderingData = new List.generate(Config.PAGE_COUNT, (index) => []);
     for (var data in parsedCoordinates) {
-      renderingData[data.pageNumber].add(RenderingSensorData(data.name, findTempByName(data.name).toString(), null));
+      renderingData[data.pageNumber].add(RenderingSensorData(findTempByName(data.name).toString(), null));
     }
     return renderingData;
   }
