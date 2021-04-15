@@ -21,9 +21,9 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int _selectedPageIndex = 0;
   List<_Page> pages = [
-    _Page("Sensors", "Sensors", Icon(AppIcons.temperature_high), Sensors()),
-    _Page("History", "History", Icon(AppIcons.history), History()),
-    _Page("Settings", "Settings", Icon(Icons.settings), Settings())
+    _Page("Sensörler", "Sensörler", Icon(AppIcons.temperature_high), Sensors()),
+    _Page("Geçmiş", "Geçmiş", Icon(AppIcons.history), History()),
+    _Page("Ayarlar", "Ayarlar", Icon(Icons.settings), Settings())
   ];
 
   void setSelectedPageIndex(int index) {
@@ -38,12 +38,17 @@ class _HomeState extends State<Home> {
       drawer: Container(
         width: 300,
         child: Drawer(
-          child: Container(
+          child: ListTileTheme(
+            iconColor: Colors.grey,
+            textColor: Colors.grey,
+            style: ListTileStyle.drawer,
+            selectedColor: Colors.white,
+            selectedTileColor: AppColors.primary,
             child: ListView(
                 padding: EdgeInsets.zero,
                 children: <Widget>[
                       Container(
-                          margin: EdgeInsets.only(top: 30),
+                          margin: EdgeInsets.fromLTRB(0, 80, 0, 40),
                           padding: EdgeInsets.all(25),
                           child: Image(image: AssetImage('assets/images/birlik_mantar.png')))
                     ] +
@@ -51,7 +56,7 @@ class _HomeState extends State<Home> {
                         pages.length,
                         (index) => ListTile(
                               selected: index == _selectedPageIndex,
-                              leading: pages[index]._icon,
+                              leading: Container(margin: EdgeInsets.only(left: 5), child: pages[index]._icon),
                               title: Text(pages[index]._drawerTitle, style: TextStyle(fontSize: 16)),
                               onTap: () {
                                 setSelectedPageIndex(index);

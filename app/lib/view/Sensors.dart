@@ -61,6 +61,8 @@ class _SensorsState extends State<Sensors> with SingleTickerProviderStateMixin {
             List<Widget> _grids = List<Widget>.generate(Config.PAGE_COUNT, (index) => SensorGrid(sensorData[index]));
             return Scaffold(
               appBar: AppBar(
+                iconTheme: IconThemeData(color: Colors.black),
+                backgroundColor: Colors.white,
                 title: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -68,11 +70,13 @@ class _SensorsState extends State<Sensors> with SingleTickerProviderStateMixin {
                     Text(
                       dataLoader.currentDate.split(' ')[0].replaceAll('-', '/'),
                       textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.black, fontSize: 18),
                     ),
                     Container(margin: EdgeInsets.fromLTRB(20, 0, 10, 0), child: Icon(Icons.access_time_sharp)),
                     Text(
                       dataLoader.currentDate.split(' ')[1],
                       textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.black, fontSize: 18),
                     ),
                   ],
                 ),
@@ -86,30 +90,27 @@ class _SensorsState extends State<Sensors> with SingleTickerProviderStateMixin {
               ),
               extendBody: true,
               bottomNavigationBar: Container(
-                margin: EdgeInsets.fromLTRB(40, 0, 40, 40),
+                margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
                 child: BottomAppBar(
                   elevation: 0,
                   color: Colors.transparent,
-                  child: ClipRRect(
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: AppColors.primaryLight,
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                          border: Border.all(color: AppColors.primary, width: 0.5)),
-                      child: TabBar(
-                        indicator: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(20)), color: AppColors.primary),
-                        tabs: List.generate(
-                            Config.PAGE_COUNT,
-                            (index) => Container(
-                                height: 50,
-                                alignment: AlignmentDirectional.center,
-                                child: Text(
-                                  "TAB ${index + 1}",
-                                  style: TextStyle(
-                                      color: _activeTabIndex == index ? Colors.white : AppColors.primary, fontWeight: FontWeight.bold, fontSize: 16),
-                                ))),
-                        controller: _tabController,
-                      ),
+                  child: Container(
+                    child: TabBar(
+                      indicator:
+                          BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(20)), color: AppColors.primary),
+                      tabs: List.generate(
+                          Config.PAGE_COUNT,
+                          (index) => Container(
+                              height: 50,
+                              alignment: AlignmentDirectional.center,
+                              child: Text(
+                                "Ranza ${index + 1}",
+                                style: TextStyle(
+                                    color: _activeTabIndex == index ? Colors.white : AppColors.primary,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16),
+                              ))),
+                      controller: _tabController,
                     ),
                   ),
                 ),

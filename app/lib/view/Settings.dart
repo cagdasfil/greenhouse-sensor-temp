@@ -76,15 +76,17 @@ class _SettingsState extends State<Settings> {
           ),
         ),
         TextButton(
-            style: ButtonStyle(padding: MaterialStateProperty.all(EdgeInsets.all(10)), backgroundColor: MaterialStateProperty.all(Colors.grey)),
+            style: ButtonStyle(
+                padding: MaterialStateProperty.all(EdgeInsets.all(15)),
+                backgroundColor: MaterialStateProperty.all(Colors.grey.shade300)),
             child: Text(
-              "SAVE",
+              "Kaydet",
               style: TextStyle(fontSize: 16, color: Colors.black),
             ),
             onPressed: () {
               print("object");
-              setTemperatureLimits(
-                  double.parse(_currentRangeValues.start.toStringAsFixed(1)), double.parse(_currentRangeValues.end.toStringAsFixed(1)));
+              setTemperatureLimits(double.parse(_currentRangeValues.start.toStringAsFixed(1)),
+                  double.parse(_currentRangeValues.end.toStringAsFixed(1)));
             })
       ],
     );
