@@ -2,6 +2,8 @@ import 'dart:ui';
 import 'package:app/config/Config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class Settings extends StatefulWidget {
   const Settings({Key key}) : super(key: key);
@@ -11,7 +13,29 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  RangeValues _currentRangeValues = const RangeValues(0, 20);
+  final double minTemp = 0;
+  final double maxTemp = 45;
+
+  RangeValues _currentRangeValues = RangeValues(Config.LOWER_LIMIT, Config.UPPER_LIMIT);
+
+  void setTemperatureLimits(double lowerLimit, double upperLimit) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    // set value
+    Config.LOWER_LIMIT = lowerLimit;
+    Config.UPPER_LIMIT = upperLimit;
+    prefs.setDouble('UPPER_LIMIT', upperLimit);
+    prefs.setDouble('LOWER_LIMIT', lowerLimit);
+
+    Fluttertoast.showToast(
+        msg: "Kaydedildi",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +58,8 @@ class _SettingsState extends State<Settings> {
               Expanded(
                 child: RangeSlider(
                   values: _currentRangeValues,
-                  min: 0,
-                  max: 30,
+                  min: minTemp,
+                  max: maxTemp,
                   labels: RangeLabels(
                     _currentRangeValues.start.toString(),
                     _currentRangeValues.end.toString(),
@@ -47,22 +71,22 @@ class _SettingsState extends State<Settings> {
                   },
                 ),
               ),
-              Container(margin: EdgeInsets.only(right: 20), child: Text("30"))
+              Container(margin: EdgeInsets.only(right: 20), child: Text("45"))
             ],
           ),
         ),
         TextButton(
             style: ButtonStyle(
-                padding: MaterialStateProperty.all(EdgeInsets.all(10)),
-                backgroundColor: MaterialStateProperty.all(Colors.grey)),
+                padding: MaterialStateProperty.all(EdgeInsets.all(15)),
+                backgroundColor: MaterialStateProperty.all(Colors.grey.shade300)),
             child: Text(
-              "SAVE",
+              "Kaydet",
               style: TextStyle(fontSize: 16, color: Colors.black),
             ),
             onPressed: () {
               print("object");
-              Config.LOWER_LIMIT = double.parse(_currentRangeValues.start.toStringAsFixed(1));
-              Config.UPPER_LIMIT = double.parse(_currentRangeValues.end.toStringAsFixed(1));
+              setTemperatureLimits(double.parse(_currentRangeValues.start.toStringAsFixed(1)),
+                  double.parse(_currentRangeValues.end.toStringAsFixed(1)));
             })
       ],
     );
